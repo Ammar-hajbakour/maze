@@ -1,12 +1,27 @@
 #mazeContainer {
+  width: 100%;
+  max-width: 810px;
+  height: calc(100vh - 175px);
+  overflow: scroll;
+  margin-inline: auto;
+  border-radius: 12px;
+  border: 2px solid #049a3b;
   -ms-overflow-style: none;
   scrollbar-width: none;
+
+  @media screen and (min-width: 1200px) {
+    max-width: unset;
+  }
 
   &::-webkit-scrollbar {
     display: none;
   }
 
   #mazeCanvas {
+    border-radius: 12px;
+    width: 810px;
+    min-height: 100%;
+    margin-inline: auto;
 
     @media screen and (min-width: 1200px) {
       width: 100%;
