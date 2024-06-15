@@ -4,7 +4,7 @@
   #mazeContainer {
     width: 100%;
     max-width: 810px;
-    height: calc(100vh - 175px);
+    height: calc(100vh - 175px - 1rem);
     overflow: scroll;
     margin-inline: auto;
     border-radius: 12px;
