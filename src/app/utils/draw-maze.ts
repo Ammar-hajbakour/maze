@@ -28,10 +28,10 @@ export class DrawMaze {
     const x = xCoord * this.cellSize;
     const y = yCoord * this.cellSize;
 
-    if (cell.visited) {
-      this.ctx.fillStyle = "black";
-      this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
-    }
+    // if (cell.visited) {
+    //   this.ctx.fillStyle = "black";
+    //   this.ctx.fillRect(x, y, this.cellSize, this.cellSize);
+    // }
     this.ctx.beginPath();
     if (!cell.n) {
       this.ctx.moveTo(x, y);

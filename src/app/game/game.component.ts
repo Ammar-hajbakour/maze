@@ -15,9 +15,6 @@ export class GameComponent implements AfterViewInit {
   @ViewChild('scrollable') scrollable!: ElementRef<HTMLDivElement>;
   @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
     if (this.player) this.player.check(event);
-    // this.resetScreen();
-    console.log(event.key);
-
     switch (event.key) {
       case 'w':
         this.moveScreenTo('up');
@@ -39,7 +36,7 @@ export class GameComponent implements AfterViewInit {
         break;
     }
   }
-  private router = inject(Router);
+  router = inject(Router);
   sprite: HTMLImageElement | null = null;
   finishSprite: HTMLImageElement | null = null;
 
@@ -50,6 +47,7 @@ export class GameComponent implements AfterViewInit {
   cellSize: number = 0;
   difficulty!: number;
 
+  gameCompleted = signal<boolean>(false);
   showFullMap = signal<boolean>(false);
   fullMap = signal<string>('');
   constructor(private route: ActivatedRoute) {
@@ -60,9 +58,7 @@ export class GameComponent implements AfterViewInit {
     this.maze = new Maze(this.difficulty, this.difficulty)
     const ctx = this.mazeCanvas.nativeElement.getContext('2d') as CanvasRenderingContext2D;
     this.draw = new DrawMaze(this.maze, ctx, this.cellSize, this.finishSprite);
-    this.player = new Player(this.maze, ctx, this.cellSize, () => {
-      this.router.navigate(['']);
-    }, this.sprite);
+    this.player = new Player(this.maze, ctx, this.cellSize, () => this.gameCompleted.set(true), this.sprite);
     this.resetScreen()
     this.canvasToDataUrl();
   }
@@ -96,7 +92,19 @@ export class GameComponent implements AfterViewInit {
       isComplete();
     }
   }
-
+  restartGame() {
+    this.maze = null;
+    this.draw = null;
+    this.player = null;
+    this.gameCompleted.set(false);
+    this.playGame();
+  }
+  nextLevel() {
+    this.difficulty += 5;
+    this.router.navigate(['game'], { queryParams: { difficulty: this.difficulty } })
+    this.gameCompleted.set(false);
+    this.playGame();
+  }
   moveScreenTo(dir: 'left' | 'right' | 'up' | 'down') {
     let x = this.scrollable.nativeElement.scrollLeft;
     let y = this.scrollable.nativeElement.scrollTop;
@@ -119,14 +127,10 @@ export class GameComponent implements AfterViewInit {
     this.scrollable.nativeElement.scroll({ behavior: 'smooth', top: y, left: x });
   }
   resetScreen() {
-    // if (!this.maze) return;
-    // this.scrollable.nativeElement.scroll({ behavior: 'smooth', left: this.maze?.startCoord.x * this.cellSize, top: this.maze?.startCoord.y * this.cellSize });
-
-    if (this.player) {
-      let x = this.player.cellCoords.x * this.cellSize;
-      const y = this.player.cellCoords.y * this.cellSize;
-      this.scrollable.nativeElement.scroll({ behavior: 'smooth', top: y, left: x });
-    }
+    if (!this.player) return;
+    let x = this.player.cellCoords.x * this.cellSize;
+    const y = this.player.cellCoords.y * this.cellSize;
+    this.scrollable.nativeElement.scroll({ behavior: 'smooth', top: y, left: x });
   }
 
   toggleFullMap() {
@@ -156,9 +160,8 @@ export class GameComponent implements AfterViewInit {
     }
     const event = new KeyboardEvent('keydown', {
       key: key,
-      keyCode: code, // Use appropriate keyCode for the key
+      keyCode: code,
       code: key,
-      // which: code,
       bubbles: true,
       cancelable: true,
       composed: true
