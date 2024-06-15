@@ -1,0 +1,28 @@
+<div class="h-screen flex flex-col justify-center items-center">
+  <img src="assets/intro.avif" alt="" class="" />
+
+  <form
+    class="w-full max-w-sm mx-auto p-4 flex flex-wrap justify-center items-start gap-4"
+  >
+    <select
+      id="diffSelect"
+      name="difficulty"
+      [(ngModel)]="difficulty"
+      class="bg-[#1f1f1f] border-2 border-[#049a3b] text-white font-bold rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-36 max-w-sm px-5 py-3.5"
+    >
+      @for(item of difficultyList; track item) {
+      <option [value]="item.value">{{ item.name | titlecase }}</option>
+      }
+    </select>
+    <button
+      (click)="playGame()"
+      class="relative inline-flex w-32 max-w-sm items-center justify-center p-0.5 overflow-hidden font-bold rounded-lg group bg-gradient-to-br from-[#049a3b] to-gray-300 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-black text-white focus:ring-4 focus:outline-none focus:ring-blue-800"
+    >
+      <span
+        class="relative px-5 py-3 transition-all ease-in duration-200 bg-[#1f1f1f] rounded-md group-hover:bg-opacity-0"
+      >
+        Play now
+      </span>
+    </button>
+  </form>
+</div>
