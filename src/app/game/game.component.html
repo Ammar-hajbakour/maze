@@ -1,5 +1,5 @@
 <div
-  class="container relative w-full min-h-screen max-w-7xl mx-auto py-4 px-4 xl:px-0"
+  class="container relative w-full min-h-screen max-w-7xl mx-auto px-4 xl:px-0"
 >
   @if(gameCompleted()) {
   <section
@@ -46,7 +46,7 @@
     >
       <div
         class="absolute top-0 right-4 text-4xl text-white cursor-pointer"
-        (click)="toggleFullMap()"
+        (click)="showFullMap.set(false)"
       >
         &times;
       </div>
@@ -56,7 +56,7 @@
         alt="full map"
       />
       <div
-        class="move-sprite flex flex-col justify-center items-center gap-2 absolute bottom-4"
+        class="move-sprite flex flex-col justify-center items-center gap-2 absolute bottom-8"
       >
         <div class="top">
           <kbd
@@ -64,7 +64,7 @@
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -77,13 +77,13 @@
             <span class="sr-only">Arrow key up</span>
           </kbd>
         </div>
-        <div class="flex justify-center items-center gap-2">
+        <div class="flex justify-center items-center gap-10">
           <kbd
             (click)="simulateKeyPress('ArrowLeft'); canvasToDataUrl()"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -95,18 +95,13 @@
             </svg>
             <span class="sr-only">Arrow key left</span>
           </kbd>
-          <kbd
-            (click)="toggleFullMap()"
-            class="inline-flex items-center px-2 py-2 text-xs font-bold border rounded-lg bg-teal-600 text-gray-100 border-gray-500"
-          >
-            FM
-          </kbd>
+
           <kbd
             (click)="simulateKeyPress('ArrowRight'); canvasToDataUrl()"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -125,7 +120,7 @@
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -140,7 +135,29 @@
         </div>
       </div>
     </div>
-
+    <div id="nav" class="flex justify-center items-center py-4 gap-4">
+      <button
+        (click)="playGame()"
+        class="relative inline-flex max-w-xs text-xs items-center justify-center p-0.5 overflow-hidden rounded-lg group bg-gradient-to-br from-[#049a3b] to-gray-300 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-black text-white focus:outline-none"
+      >
+        <span
+          class="relative px-2 py-1 transition-all ease-in duration-200 bg-[#1f1f1f] rounded-md group-hover:bg-opacity-0"
+        >
+          Restart
+        </span>
+      </button>
+      <img class="w-10 h-10" src="assets/maze.png" alt="logo" />
+      <button
+        (click)="router.navigate([''])"
+        class="relative inline-flex max-w-xs text-xs items-center justify-center p-0.5 overflow-hidden rounded-lg group bg-gradient-to-br from-[#049a3b] to-gray-300 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-black text-white focus:outline-none"
+      >
+        <span
+          class="relative px-2 py-1 transition-all ease-in duration-200 bg-[#1f1f1f] rounded-md group-hover:bg-opacity-0"
+        >
+          Home
+        </span>
+      </button>
+    </div>
     <div id="mazeContainer" #scrollable>
       <canvas
         #mazeCanvas
@@ -158,7 +175,7 @@
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-red-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -171,13 +188,13 @@
             <span class="sr-only">Arrow key up</span>
           </kbd>
         </div>
-        <div class="flex justify-center items-center gap-2">
+        <div class="flex justify-center items-center gap-3">
           <kbd
             (click)="moveScreenTo('left')"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-red-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -189,67 +206,18 @@
             </svg>
             <span class="sr-only">Arrow key left</span>
           </kbd>
-          <div class="reset-screen">
-            <kbd
-              (click)="resetScreen()"
-              class="inline-flex items-center border rounded-lg bg-teal-600 text-gray-100 border-gray-500"
-            >
-              <svg
-                class="w-2.5 h-2.5 top"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 16 10"
-              >
-                <path
-                  d="M9.207 1A2 2 0 0 0 6.38 1L.793 6.586A2 2 0 0 0 2.207 10H13.38a2 2 0 0 0 1.414-3.414L9.207 1Z"
-                />
-              </svg>
-
-              <div style="display: flex; gap: 0.5rem">
-                <svg
-                  class="w-2.5 h-2.5 left"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 10 16"
-                >
-                  <path
-                    d="M8.766.566A2 2 0 0 0 6.586 1L1 6.586a2 2 0 0 0 0 2.828L6.586 15A2 2 0 0 0 10 13.586V2.414A2 2 0 0 0 8.766.566Z"
-                  />
-                </svg>
-                <svg
-                  class="w-2.5 h-2.5 right"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="currentColor"
-                  viewBox="0 0 10 16"
-                >
-                  <path
-                    d="M3.414 1A2 2 0 0 0 0 2.414v11.172A2 2 0 0 0 3.414 15L9 9.414a2 2 0 0 0 0-2.828L3.414 1Z"
-                  />
-                </svg>
-              </div>
-              <svg
-                class="w-2.5 h-2.5 bottom"
-                aria-hidden="true"
-                xmlns="http://www.w3.org/2000/svg"
-                fill="currentColor"
-                viewBox="0 0 16 10"
-              >
-                <path
-                  d="M15.434 1.235A2 2 0 0 0 13.586 0H2.414A2 2 0 0 0 1 3.414L6.586 9a2 2 0 0 0 2.828 0L15 3.414a2 2 0 0 0 .434-2.179Z"
-                />
-              </svg>
-              <span class="sr-only">Reset screen</span>
-            </kbd>
-          </div>
+          <kbd
+            (click)="openFullMap()"
+            class="inline-flex items-center px-2 py-2 text-xs font-bold border rounded-lg bg-teal-600 text-gray-100 border-gray-500"
+          >
+            FM
+          </kbd>
           <kbd
             (click)="moveScreenTo('right')"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-red-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -268,7 +236,7 @@
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-red-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -282,36 +250,15 @@
           </kbd>
         </div>
       </div>
-      <div class="flex justify-center items-center gap-4 flex-col">
-        <button
-          (click)="playGame()"
-          class="relative inline-flex max-w-xs text-xs items-center justify-center p-0.5 overflow-hidden rounded-lg group bg-gradient-to-br from-[#049a3b] to-gray-300 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-black text-white focus:outline-none"
-        >
-          <span
-            class="relative px-2 py-1 transition-all ease-in duration-200 bg-[#1f1f1f] rounded-md group-hover:bg-opacity-0"
-          >
-            Restart
-          </span>
-        </button>
-        <button
-          (click)="router.navigate([''])"
-          class="relative inline-flex max-w-xs text-xs items-center justify-center p-0.5 overflow-hidden rounded-lg group bg-gradient-to-br from-[#049a3b] to-gray-300 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-black text-white focus:outline-none"
-        >
-          <span
-            class="relative px-2 py-1 transition-all ease-in duration-200 bg-[#1f1f1f] rounded-md group-hover:bg-opacity-0"
-          >
-            Home
-          </span>
-        </button>
-      </div>
-      <div class="move-sprite">
+
+      <div class="move-sprite flex flex-col justify-center items-center gap-2">
         <div class="top">
           <kbd
             (click)="simulateKeyPress('ArrowUp')"
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -324,13 +271,13 @@
             <span class="sr-only">Arrow key up</span>
           </kbd>
         </div>
-        <div class="flex justify-center items-center gap-2">
+        <div class="flex justify-center items-center gap-10">
           <kbd
             (click)="simulateKeyPress('ArrowLeft')"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -342,18 +289,13 @@
             </svg>
             <span class="sr-only">Arrow key left</span>
           </kbd>
-          <kbd
-            (click)="toggleFullMap()"
-            class="inline-flex items-center px-2 py-2 text-xs font-bold border rounded-lg bg-teal-600 text-gray-100 border-gray-500"
-          >
-            FM
-          </kbd>
+
           <kbd
             (click)="simulateKeyPress('ArrowRight')"
             class="rtl:rotate-180 inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
@@ -372,7 +314,7 @@
             class="inline-flex items-center px-2 py-1.5 border rounded-lg bg-blue-600 text-gray-100 border-gray-500"
           >
             <svg
-              class="w-2.5 h-2.5"
+              class="w-4 h-4"
               aria-hidden="true"
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"

@@ -4,7 +4,7 @@
   #mazeContainer {
     width: 100%;
     max-width: 810px;
-    height: calc(100vh - 175px - 1rem);
+    height: calc(100vh - 175px - 60px);
     overflow: scroll;
     margin-inline: auto;
     border-radius: 12px;
@@ -37,14 +37,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1rem;
+    gap: 3rem;
     position: fixed;
     bottom: 0;
     left: 50%;
     transform: translateX(-50%);
     background-color: #1f1f1f;
     width: 100%;
-    height: 125px;
+    height: 150px;
     padding: 1rem;
 
     .move-sprite,
@@ -54,7 +54,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
 
     }
 

@@ -133,9 +133,9 @@ export class GameComponent implements AfterViewInit {
     this.scrollable.nativeElement.scroll({ behavior: 'smooth', top: y, left: x });
   }
 
-  toggleFullMap() {
+  openFullMap() {
     this.canvasToDataUrl()
-    this.showFullMap.update(v => !v)
+    this.showFullMap.set(true)
   }
 
   ngAfterViewInit(): void {
